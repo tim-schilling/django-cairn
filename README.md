@@ -25,3 +25,105 @@ If you're still interested, add a comment to
 If you have specific ideas for the site, feel free to share them with me
 how you're most comfortable. The best public location is currently the 
 [welcome discussion](https://github.com/tim-schilling/django-cairn/discussions/1).
+
+
+# Design Document
+
+## Content sources
+
+- RSS feed reader integration
+- DjangoCon Jekyll file parser
+- Django newsletter comments
+- Helpful social media links
+- Helpful gists
+
+## Models
+
+**Content**
+- title
+- description
+- tags
+- posted
+- published
+- source
+- url
+- image
+- thumbnail
+- last updated
+- last checked
+- parsed content
+- search content
+
+**Source**
+- url
+- title
+- last updated
+- last checked
+- contact
+
+**Tag**
+- title
+
+**DjangoVersionTag**
+
+**PythonVersionTag**
+
+**ContentReview(historical)**
+- content
+- user
+- published
+- publish date
+- created
+- updated
+- review
+- recommend
+- rating
+- reader level (beginner, intermediate, expert, all)
+
+**ReviewRequest**
+
+**FetchSourceSnapshot**
+- created
+- updated
+- state
+- date
+- source
+
+**FetchContentSnapshot**
+- created
+- updated
+- content
+- state
+
+## Views
+
+**Landing**
+- show latest content
+- show latest reviewed content
+- submit new source
+- submit new content
+- request to be curator
+- search
+
+**Submit new source**
+- url
+- title
+- contact
+- reason
+
+**Submit new content**
+- url
+- django versions
+- python versions
+- source title
+- contact
+- reason
+
+**Request to be curator** (email)
+
+**Report curation** (email?)
+
+**Search**
+- full text search
+- filter on django tags
+- filter on python tags
