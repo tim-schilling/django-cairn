@@ -29,6 +29,9 @@ how you're most comfortable. The best public location is currently the
 
 # Design Document
 
+I wrote a [blog post](https://www.better-simple.com/django/cairn/2023/02/28/plotting-the-trail-for-django-cairn/)
+detailing the process of this design that may be useful.
+
 ## Content sources
 
 - RSS feed reader integration
@@ -53,6 +56,8 @@ how you're most comfortable. The best public location is currently the
 - last checked
 - parsed content
 - search content
+- next check
+- staleness count
 
 **Source**
 - url
@@ -60,6 +65,7 @@ how you're most comfortable. The best public location is currently the
 - last updated
 - last checked
 - contact
+- active
 
 **Tag**
 - title
