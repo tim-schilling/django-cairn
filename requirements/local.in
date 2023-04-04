@@ -1,4 +1,4 @@
--c production.txt
+-r production.txt
 
 Werkzeug[watchdog]
 ipdb
