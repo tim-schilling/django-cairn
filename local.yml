@@ -7,7 +7,7 @@ volumes:
 services:
   django:
     build:
-      context: django_cairn
+      context: .
       dockerfile: compose/local/django/Dockerfile
     image: django_cairn_local_django
     container_name: django_cairn_local_django
@@ -24,7 +24,7 @@ services:
 
   postgres:
     build:
-      context: django_cairn
+      context: .
       dockerfile: compose/production/postgres/Dockerfile
     image: django_cairn_production_postgres
     container_name: django_cairn_local_postgres
@@ -38,7 +38,7 @@ services:
     image: django_cairn_local_docs
     container_name: django_cairn_local_docs
     build:
-      context: django_cairn
+      context: .
       dockerfile: compose/local/docs/Dockerfile
     env_file:
       - .envs/.local/.django

@@ -9,7 +9,7 @@ volumes:
 services:
   django:
     build:
-      context: django_cairn
+      context: .
       dockerfile: compose/production/django/Dockerfile
 
     image: django_cairn_production_django
@@ -25,7 +25,7 @@ services:
 
   postgres:
     build:
-      context: django_cairn
+      context: .
       dockerfile: compose/production/postgres/Dockerfile
     image: django_cairn_production_postgres
     volumes:
@@ -36,7 +36,7 @@ services:
 
   traefik:
     build:
-      context: django_cairn
+      context: .
       dockerfile: compose/production/traefik/Dockerfile
     image: django_cairn_production_traefik
     depends_on:
@@ -51,7 +51,7 @@ services:
     image: redis:6
   nginx:
     build:
-      context: django_cairn
+      context: .
       dockerfile: compose/production/nginx/Dockerfile
     image: django_cairn_local_nginx
     depends_on:
