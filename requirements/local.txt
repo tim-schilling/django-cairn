@@ -50,7 +50,7 @@ dill==0.3.6
     # via pylint
 distlib==0.3.6
     # via virtualenv
-django==4.0.10
+django==4.2
     # via
     #   -c requirements/production.txt
     #   django-debug-toolbar

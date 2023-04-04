@@ -8,6 +8,7 @@ argon2-cffi
 whitenoise
 redis
 hiredis
+environ
 django
 django-environ
 django-model-utils

@@ -20,6 +20,7 @@
       <excludeFolder url="file://$MODULE_DIR$/htmlcov" />
       <excludeFolder url="file://$MODULE_DIR$/staticfiles" />
     </content>
+    <orderEntry type="jdk" jdkName="Python 3.10 (django-cairn)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="PackageRequirementsSettings">
