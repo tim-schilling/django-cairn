@@ -1,0 +1,60 @@
+version: '3'
+
+volumes:
+  production_postgres_data: {}
+  production_postgres_data_backups: {}
+  production_traefik: {}
+  production_django_media: {}
+
+services:
+  django:
+    build:
+      context: django_cairn2
+      dockerfile: compose/production/django/Dockerfile
+
+    image: django_cairn_production_django
+    volumes:
+      - production_django_media:/app/django_cairn/media
+    depends_on:
+      - postgres
+      - redis
+    env_file:
+      - .envs/.production/.django
+      - .envs/.production/.postgres
+    command: /start
+
+  postgres:
+    build:
+      context: django_cairn2
+      dockerfile: compose/production/postgres/Dockerfile
+    image: django_cairn_production_postgres
+    volumes:
+      - production_postgres_data:/var/lib/postgresql/data
+      - production_postgres_data_backups:/backups
+    env_file:
+      - .envs/.production/.postgres
+
+  traefik:
+    build:
+      context: django_cairn2
+      dockerfile: compose/production/traefik/Dockerfile
+    image: django_cairn_production_traefik
+    depends_on:
+      - django
+    volumes:
+      - production_traefik:/etc/traefik/acme
+    ports:
+      - "0.0.0.0:80:80"
+      - "0.0.0.0:443:443"
+
+  redis:
+    image: redis:6
+  nginx:
+    build:
+      context: django_cairn2
+      dockerfile: compose/production/nginx/Dockerfile
+    image: django_cairn_local_nginx
+    depends_on:
+      - django
+    volumes:
+      - production_django_media:/usr/share/nginx/media:ro

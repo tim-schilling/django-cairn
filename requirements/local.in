@@ -1,0 +1,20 @@
+-c production.txt
+
+Werkzeug[watchdog]
+ipdb
+psycopg2
+mypy
+django-stubs
+pytest
+pytest-sugar
+sphinx
+sphinx-autobuild
+coverage
+pylint-django
+pre-commit
+pip-tools
+factory-boy
+django-debug-toolbar
+django-extensions
+django-coverage-plugin
+pytest-django

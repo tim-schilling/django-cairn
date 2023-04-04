@@ -1,0 +1,51 @@
+version: '3'
+
+volumes:
+  django_cairn_local_postgres_data: {}
+  django_cairn_local_postgres_data_backups: {}
+
+services:
+  django:
+    build:
+      context: django_cairn2
+      dockerfile: compose/local/django/Dockerfile
+    image: django_cairn_local_django
+    container_name: django_cairn_local_django
+    depends_on:
+      - postgres
+    volumes:
+      - .:/app:z
+    env_file:
+      - .envs/.local/.django
+      - .envs/.local/.postgres
+    ports:
+      - "8000:8000"
+    command: /start
+
+  postgres:
+    build:
+      context: django_cairn2
+      dockerfile: compose/production/postgres/Dockerfile
+    image: django_cairn_production_postgres
+    container_name: django_cairn_local_postgres
+    volumes:
+      - django_cairn_local_postgres_data:/var/lib/postgresql/data
+      - django_cairn_local_postgres_data_backups:/backups
+    env_file:
+      - .envs/.local/.postgres
+
+  docs:
+    image: django_cairn_local_docs
+    container_name: django_cairn_local_docs
+    build:
+      context: django_cairn2
+      dockerfile: compose/local/docs/Dockerfile
+    env_file:
+      - .envs/.local/.django
+    volumes:
+      - ./docs:/docs:z
+      - ./config:/app/config:z
+      - ./django_cairn:/app/django_cairn:z
+    ports:
+      - "9000:9000"
+    command: /start-docs

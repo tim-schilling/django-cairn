@@ -1,0 +1,17 @@
+gunicorn
+psycopg2
+sentry-sdk
+django-anymail
+python-slugify
+Pillow
+argon2-cffi
+whitenoise
+redis
+hiredis
+django
+django-environ
+django-model-utils
+django-allauth
+django-crispy-forms
+crispy-bootstrap5
+django-redis
