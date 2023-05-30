@@ -6,8 +6,6 @@
 #
 alabaster==0.7.13
     # via sphinx
-appnope==0.1.3
-    # via ipython
 argon2-cffi==21.3.0
     # via -r requirements/production.txt
 argon2-cffi-bindings==21.2.0
@@ -54,7 +52,7 @@ click==8.1.3
     # via pip-tools
 colorama==0.4.6
     # via sphinx-autobuild
-coverage==7.2.2
+coverage==7.2.7
     # via
     #   -r requirements/local.in
     #   django-coverage-plugin
@@ -117,8 +115,6 @@ docutils==0.19
     # via sphinx
 environ==1.0
     # via -r requirements/production.txt
-exceptiongroup==1.1.1
-    # via pytest
 executing==1.2.0
     # via stack-data
 factory-boy==3.2.1
@@ -305,14 +301,7 @@ text-unidecode==1.3
     #   -r requirements/production.txt
     #   python-slugify
 tomli==2.0.1
-    # via
-    #   build
-    #   django-stubs
-    #   ipdb
-    #   mypy
-    #   pylint
-    #   pyproject-hooks
-    #   pytest
+    # via django-stubs
 tomlkit==0.11.7
     # via pylint
 tornado==6.2
@@ -327,7 +316,6 @@ types-pyyaml==6.0.12.9
     # via django-stubs
 typing-extensions==4.5.0
     # via
-    #   astroid
     #   django-stubs
     #   django-stubs-ext
     #   mypy
