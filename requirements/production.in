@@ -16,3 +16,7 @@ django-allauth
 django-crispy-forms
 crispy-bootstrap5
 django-redis
+feedparser
+django-extensions
+python-dateutil
+beautifulsoup4
