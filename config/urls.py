@@ -15,7 +15,7 @@ urlpatterns = [
     # User management
     path("users/", include("django_cairn.users.urls", namespace="users")),
     path("accounts/", include("allauth.urls")),
-    # Your stuff: custom urls includes go here
+    path("", include("django_cairn.content.urls", namespace="content")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

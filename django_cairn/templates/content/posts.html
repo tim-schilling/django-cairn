@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static humanize %}
+
+{% block title %}Posts | Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}{% endblock %}
+
+{% block content %}
+<div class="container">
+  {% include "includes/pagination.html" with aria_label="Paginate posts" %}
+  <div class="row">
+    <div class="col-sm-12">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Author</th>
+            <th scope="col">Title</th>
+            <th scope="col">Date Posted</th>
+            <th scope="col">Description</th>
+            <th scope="col">Link</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for post in page_obj %}
+            <tr>
+              <td>{{ post.author }}</td>
+              <td>{{ post.title }}</td>
+              <td title="{{ post.posted.isoformat }}">{{ post.posted|naturaltime }}</td>
+              <td>{{ post.description|linebreaksbr }}</td>
+              <td><a href="{{ post.url }}" target="_blank">Read!</a></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      </div>
+    </div>
+  </div>
+  {% include "includes/pagination.html" with aria_label="Paginate posts" %}
+
+</div>
+{% endblock content %}
