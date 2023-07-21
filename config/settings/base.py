@@ -59,7 +59,7 @@ DJANGO_APPS = [
     "django.contrib.sites",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # "django.contrib.humanize", # Handy template tags
+    "django.contrib.humanize",
     "django.contrib.admin",
     "django.forms",
 ]
@@ -71,10 +71,7 @@ THIRD_PARTY_APPS = [
     "allauth.socialaccount",
 ]
 
-LOCAL_APPS = [
-    "django_cairn.users",
-    # Your stuff: custom apps go here
-]
+LOCAL_APPS = ["django_cairn.users", "django_cairn.content"]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
