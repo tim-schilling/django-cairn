@@ -333,3 +333,6 @@ django_cairn/media/
 .env
 .envs/.local
 !.envs/.local/
+
+# Security files
+*.pem
