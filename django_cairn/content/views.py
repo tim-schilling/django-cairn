@@ -9,3 +9,8 @@ class PostListView(ListView):
     queryset = Post.objects.active().select_related("source")
     template_name = "content/posts.html"
     paginate_by = 50
+
+
+class TaggedPostListView(PostListView):
+    def get_queryset(self):
+        return super().get_queryset().tagged_posts(self.kwargs["tag"])
