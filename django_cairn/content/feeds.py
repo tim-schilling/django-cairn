@@ -1,7 +1,7 @@
 import feedparser
 from dateutil.parser import parse as dateutil_parser
 
-from django_cairn.content.models import Post, Source
+from django_cairn.content.models import Post, Source, Tag
 
 POST_MAPPING = {
     "url": "link",
@@ -25,12 +25,12 @@ def fetch_from_source(source: Source):
         breakpoint()
     if response.get("version"):
         for entry in response["entries"]:
+            if not entry["title"] or not entry.get("published"):
+                continue
             post = Post.objects.filter(url=entry["link"]).first()
             if not post:
                 post = Post(source=source, url=entry["link"])
             post.reset_feed_properties()
-            if not entry["title"] or not entry.get("published"):
-                continue
             post.posted = dateutil_parser(entry["published"])
             if "content" in entry:
                 post.body = entry["content"][0]["value"]
@@ -48,6 +48,30 @@ def fetch_from_source(source: Source):
                 setattr(post, field, entry[feed])
             post.reset_search_properties()
             post.save()
+
+            tag_name_mapping = {
+                Tag.slugify(tag_name): tag_name
+                for tag in entry.get("tags", [])
+                if tag.get("term") and (tag_name := tag["term"].strip())
+            }
+            post_tag_queryset = Tag.objects.filter(slug__in=tag_name_mapping.keys())
+            # Look up any existing tags to reduce the number of conflicts on insert
+            existing_tags = set(post_tag_queryset.values_list("slug", flat=True))
+            # Attempt to insert any new tags.
+            Tag.objects.bulk_create(
+                [
+                    Tag(name=name, slug=slug)
+                    for slug, name in tag_name_mapping.items()
+                    if slug not in existing_tags
+                ],
+                # While we are attempting to prevent inserting existing tags,
+                # a web request to the admin could create a tag at the same
+                # exact time. If that occurs, it's fine as long as the row gets
+                # inserted.
+                ignore_conflicts=True,
+            )
+            # Update the post's associated tags
+            post.tags.set(post_tag_queryset)
 
         feed = response["feed"]
         for field, feed_field in SOURCE_MAPPING.items():
