@@ -27,9 +27,10 @@ def fetch_from_source(source: Source):
         for entry in response["entries"]:
             if not entry["title"] or not entry.get("published"):
                 continue
-            post = Post.objects.filter(url=entry["link"]).first()
+            post, created_post = Post.objects.filter(url=entry["link"]).first(), False
             if not post:
                 post = Post(source=source, url=entry["link"])
+                created_post = True
             post.reset_feed_properties()
             post.posted = dateutil_parser(entry["published"])
             if "content" in entry:
@@ -72,6 +73,10 @@ def fetch_from_source(source: Source):
             )
             # Update the post's associated tags
             post.tags.set(post_tag_queryset)
+            if created_post:
+                # Only when we create the post should we reset the tags.
+                # Otherwise we would undo any curation work later on.
+                post.reset_django_tags()
 
         feed = response["feed"]
         for field, feed_field in SOURCE_MAPPING.items():

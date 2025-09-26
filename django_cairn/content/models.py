@@ -1,3 +1,4 @@
+from collections.abc import Iterable
 from datetime import datetime, timedelta
 
 from bs4 import BeautifulSoup
@@ -51,6 +52,26 @@ class PostQuerySet(ActiveQuerySet):
             tagged_posts__tag__slug=tag_slug,
         )
 
+    def django(self):
+        """Filter the posts to those with the Django tag.
+
+        This is going to be a common feature, so let's hardcode it
+        """
+        return self.tagged_posts("django")
+
+    def for_django_versions(self, versions: Iterable[str]):
+        """
+        Filter to posts that have the given active DjangoTag versions
+
+        A tag could be associated but be inactive because the post
+        calls out which specific version. Or it can't be verified.
+        This may be over-engineering though.
+        """
+        return self.filter(
+            django_tagged_posts__active=True,
+            django_tagged_posts__django_tag__version__in=versions,
+        ).distinct()
+
 
 class Post(TimestampedModel):
     active = models.BooleanField(default=True)
@@ -86,6 +107,10 @@ class Post(TimestampedModel):
     def reset_search_properties(self):
         soup = BeautifulSoup(self.body, "html.parser")
         self.search_text = " ".join(soup.stripped_strings)
+
+    def reset_django_tags(self):
+        """Reset the related DjangoTag instances based on posted."""
+        self.django_tags.set(DjangoTag.objects.active_for_date(self.posted))
 
     @property
     def author(self):
@@ -137,6 +162,12 @@ class DjangoTagManager(models.Manager):
         return self.filter(released__lte=value, end_of_life__gte=value)
 
 
+class DjangoTagQuerySet(models.QuerySet):
+    def active_for_date(self, value: datetime):
+        """Limit DjangoTag queryset to those that were active during a given date."""
+        return self.filter(released__lte=value, end_of_life__gte=value)
+
+
 class DjangoTag(TimestampedModel):
     class Version(models.TextChoices):
         v1_3 = "1.3", _("1.3")
@@ -169,10 +200,16 @@ class DjangoTag(TimestampedModel):
     # Potentially can switch to DateTimeRangeField
     released = models.DateTimeField()
     end_of_life = models.DateTimeField()
-    objects = DjangoTagManager()
+    objects = DjangoTagManager.from_queryset(DjangoTagQuerySet)()
 
     def natural_key(self):
         return (self.version,)
+
+    def __repr__(self):
+        return f"<DjangoTag version={self.version!r} released={self.released!r} end_of_life={self.end_of_life!r}>"
+
+    def __str__(self):
+        return f"{self.version}"
 
 
 class DjangoTaggedPost(TimestampedModel):
